@@ -1,4 +1,5 @@
 import { useId, useMemo, useState } from "react";
+import { Link } from "react-router";
 
 export function RootLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -83,8 +84,8 @@ export function RootLayout({ children }) {
         <aside className="hidden w-72 shrink-0 border-r border-gray-200 bg-white lg:block">
           <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
             <nav className="space-y-1">
-              <button
-                type="button"
+              <Link
+                to="/"
                 className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
               >
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-700">
@@ -103,10 +104,10 @@ export function RootLayout({ children }) {
                   </svg>
                 </span>
                 <span>Home</span>
-              </button>
+              </Link>
 
-              <button
-                type="button"
+              <Link
+                to="/projects"
                 className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
               >
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
@@ -125,7 +126,7 @@ export function RootLayout({ children }) {
                   </svg>
                 </span>
                 <span>Projects</span>
-              </button>
+              </Link>
 
               <button
                 type="button"
