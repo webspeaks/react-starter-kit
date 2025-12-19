@@ -3,7 +3,7 @@ export default [
     file: "./routes/root.jsx",
     children: [
       {
-        file: "./routes/_index/home.jsx",
+        file: "./routes/home.jsx",
         index: true,
       },
       {

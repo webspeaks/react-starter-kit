@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { RootLayout } from "../layouts/RootLayout";
 
 export default function Root() {
