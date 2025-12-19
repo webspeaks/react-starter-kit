@@ -14,6 +14,14 @@ export default [
     ],
   },
   {
+    path: "api/login",
+    file: "./routes/api.login.jsx",
+  },
+  {
+    path: "api/logout",
+    file: "./routes/api.logout.jsx",
+  },
+  {
     path: "login",
     file: "./routes/Login.jsx",
   },

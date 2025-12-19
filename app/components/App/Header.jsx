@@ -18,6 +18,14 @@ export function AppHeader({
   const user = useSelector((state) => state.auth.user);
   const isAuthed = useSelector((state) => !!state.auth.token);
 
+  async function onLogout() {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      dispatch(logout());
+    }
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="flex h-14 w-full items-center gap-3 px-3 sm:px-4">
@@ -109,7 +117,7 @@ export function AppHeader({
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => dispatch(logout())}
+                onClick={onLogout}
               >
                 Logout
               </Button>

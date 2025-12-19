@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ import { Input } from "../components/UI/input";
 import { setCredentials } from "../store/authSlice";
 
 async function loginRequest({ username, password }) {
-  const res = await fetch("https://dummyjson.com/auth/login", {
+  const res = await fetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,6 +41,7 @@ export function meta() {
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const isAuthed = useSelector((state) => !!state.auth.token);
 
@@ -50,8 +51,11 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: loginRequest,
     onSuccess: (data) => {
-      dispatch(setCredentials({ token: data.accessToken, user: data }));
-      navigate("/");
+      dispatch(setCredentials({ token: "cookie", user: data.user }));
+
+      const params = new URLSearchParams(location.search);
+      const redirect = params.get("redirect") || "/";
+      navigate(redirect);
     },
   });
 

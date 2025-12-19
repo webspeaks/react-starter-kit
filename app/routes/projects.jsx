@@ -5,6 +5,13 @@ export function meta() {
   ];
 }
 
+import { requireAuthToken } from "../server/auth";
+
+export async function loader({ request }) {
+  requireAuthToken(request);
+  return null;
+}
+
 export default function Projects() {
   return (
     <div className="p-6">

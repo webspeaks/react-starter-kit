@@ -11,17 +11,3 @@ export const store = configureStore({
     auth: authReducer,
   },
 });
-
-if (typeof window !== "undefined") {
-  store.subscribe(() => {
-    try {
-      const state = store.getState();
-      window.localStorage.setItem(
-        "auth",
-        JSON.stringify({ token: state.auth.token, user: state.auth.user }),
-      );
-    } catch {
-      // Ignore localStorage errors (e.g. blocked).
-    }
-  });
-}
