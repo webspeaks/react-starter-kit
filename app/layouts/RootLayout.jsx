@@ -13,6 +13,7 @@ import {
   toggleDesktopSidebar,
   toggleGroup as toggleGroupAction,
   setGroupExpanded,
+  setDesktopSidebarCollapsed,
 } from "../store/sidebarSlice";
 
 import { toggleThemeMode } from "../store/themeSlice";
@@ -35,6 +36,15 @@ export function RootLayout({ children }) {
     }
 
     try {
+      const storedDesktopCollapsed = window.localStorage.getItem(
+        "sidebar.desktopSidebarCollapsed",
+      );
+      if (storedDesktopCollapsed === "true") {
+        dispatch(setDesktopSidebarCollapsed(true));
+      } else if (storedDesktopCollapsed === "false") {
+        dispatch(setDesktopSidebarCollapsed(false));
+      }
+
       const stored = window.localStorage.getItem("sidebar.expandedGroups");
       if (!stored) {
         return;
@@ -63,13 +73,17 @@ export function RootLayout({ children }) {
 
     try {
       window.localStorage.setItem(
+        "sidebar.desktopSidebarCollapsed",
+        String(desktopSidebarCollapsed),
+      );
+      window.localStorage.setItem(
         "sidebar.expandedGroups",
         JSON.stringify(expandedGroups),
       );
     } catch {
       // Ignore localStorage errors (e.g. blocked).
     }
-  }, [expandedGroups]);
+  }, [desktopSidebarCollapsed, expandedGroups]);
 
   const groupIdBase = useId();
 
