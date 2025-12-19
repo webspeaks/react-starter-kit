@@ -1,4 +1,4 @@
-import { useId, useMemo } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,9 +12,13 @@ import {
   openSidebar,
   toggleDesktopSidebar,
   toggleGroup as toggleGroupAction,
+  setGroupExpanded,
 } from "../store/sidebarSlice";
 
 import { toggleThemeMode } from "../store/themeSlice";
+
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export function RootLayout({ children }) {
   const dispatch = useDispatch();
@@ -24,6 +28,48 @@ export function RootLayout({ children }) {
   );
   const themeMode = useSelector((state) => state.theme.mode);
   const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
+
+  useIsomorphicLayoutEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const stored = window.localStorage.getItem("sidebar.expandedGroups");
+      if (!stored) {
+        return;
+      }
+
+      const parsed = JSON.parse(stored);
+      if (!parsed || typeof parsed !== "object") {
+        return;
+      }
+
+      for (const group of sidebarMenuConfig.groups) {
+        const nextValue = parsed[group.key];
+        if (typeof nextValue === "boolean") {
+          dispatch(setGroupExpanded({ key: group.key, expanded: nextValue }));
+        }
+      }
+    } catch {
+      // Ignore localStorage/JSON errors and fall back to defaults.
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        "sidebar.expandedGroups",
+        JSON.stringify(expandedGroups),
+      );
+    } catch {
+      // Ignore localStorage errors (e.g. blocked).
+    }
+  }, [expandedGroups]);
 
   const groupIdBase = useId();
 
