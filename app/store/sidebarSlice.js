@@ -10,6 +10,7 @@ function buildDefaultExpandedGroups() {
 
 const initialState = {
   sidebarOpen: false,
+  desktopSidebarCollapsed: false,
   expandedGroups: buildDefaultExpandedGroups(),
 };
 
@@ -26,6 +27,12 @@ const sidebarSlice = createSlice({
     setSidebarOpen(state, action) {
       state.sidebarOpen = action.payload;
     },
+    toggleDesktopSidebar(state) {
+      state.desktopSidebarCollapsed = !state.desktopSidebarCollapsed;
+    },
+    setDesktopSidebarCollapsed(state, action) {
+      state.desktopSidebarCollapsed = action.payload;
+    },
     toggleGroup(state, action) {
       const key = action.payload;
       state.expandedGroups[key] = !state.expandedGroups[key];
@@ -41,6 +48,8 @@ export const {
   openSidebar,
   closeSidebar,
   setSidebarOpen,
+  toggleDesktopSidebar,
+  setDesktopSidebarCollapsed,
   toggleGroup,
   setGroupExpanded,
 } = sidebarSlice.actions;

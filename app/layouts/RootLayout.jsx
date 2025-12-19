@@ -4,17 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { sidebarMenu as sidebarMenuConfig } from "../config/sidebarMenu";
 
-import { SidebarMenu } from "../components/SidebarMenu";
+import { SidebarMenu } from "../components/App/SidebarMenu";
+import { AppHeader } from "../components/App/Header";
 
 import {
   closeSidebar,
   openSidebar,
+  toggleDesktopSidebar,
   toggleGroup as toggleGroupAction,
 } from "../store/sidebarSlice";
 
 export function RootLayout({ children }) {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
+  const desktopSidebarCollapsed = useSelector(
+    (state) => state.sidebar.desktopSidebarCollapsed,
+  );
   const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
 
   const groupIdBase = useId();
@@ -34,53 +39,19 @@ export function RootLayout({ children }) {
 
   return (
     <div className="min-h-dvh bg-gray-50 text-gray-900">
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-3 px-3 sm:px-4">
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
-            aria-label="Open sidebar"
-            aria-expanded={sidebarOpen}
-            onClick={() => dispatch(openSidebar())}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
-
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-sm font-semibold text-white">
-              A
-            </div>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold">App Name</div>
-              <div className="truncate text-xs text-gray-500">Dashboard</div>
-            </div>
-          </div>
-
-          <div className="ml-auto flex items-center gap-3">
-            <div className="hidden text-sm text-gray-600 sm:block">
-              John Doe
-            </div>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
-              JD
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppHeader
+        sidebarOpen={sidebarOpen}
+        onOpenSidebar={() => dispatch(openSidebar())}
+        desktopSidebarCollapsed={desktopSidebarCollapsed}
+        onToggleDesktopSidebar={() => dispatch(toggleDesktopSidebar())}
+      />
 
       <div className="flex w-full">
-        <aside className="hidden w-72 shrink-0 border-r border-gray-200 bg-white lg:block">
+        <aside
+          className={`hidden w-72 shrink-0 border-r border-gray-200 bg-white lg:block ${
+            desktopSidebarCollapsed ? "lg:hidden" : ""
+          }`}
+        >
           <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
             <SidebarMenu
               primaryItems={primaryItems}
