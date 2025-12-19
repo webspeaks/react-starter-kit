@@ -1,15 +1,21 @@
+import { Moon, Sun } from "lucide-react";
+
+import { Button } from "../ui/button";
+
 export function AppHeader({
   sidebarOpen,
   onOpenSidebar,
   desktopSidebarCollapsed,
   onToggleDesktopSidebar,
+  themeMode,
+  onToggleTheme,
 }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-3 px-3 sm:px-4">
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring lg:hidden"
           aria-label="Open sidebar"
           aria-expanded={sidebarOpen}
           onClick={onOpenSidebar}
@@ -31,7 +37,7 @@ export function AppHeader({
 
         <button
           type="button"
-          className="hidden h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:inline-flex"
+          className="hidden h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring lg:inline-flex"
           aria-label={desktopSidebarCollapsed ? "Show sidebar" : "Hide sidebar"}
           aria-pressed={!desktopSidebarCollapsed}
           onClick={onToggleDesktopSidebar}
@@ -70,8 +76,26 @@ export function AppHeader({
         </div>
 
         <div className="ml-auto flex items-center gap-3">
-          <div className="hidden text-sm text-gray-600 sm:block">John Doe</div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-700">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onToggleTheme}
+            aria-label={
+              themeMode === "dark" ? "Switch to light" : "Switch to dark"
+            }
+          >
+            {themeMode === "dark" ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
+
+          <div className="hidden text-sm text-muted-foreground sm:block">
+            John Doe
+          </div>
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
             JD
           </div>
         </div>

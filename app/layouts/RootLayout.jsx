@@ -14,12 +14,15 @@ import {
   toggleGroup as toggleGroupAction,
 } from "../store/sidebarSlice";
 
+import { toggleThemeMode } from "../store/themeSlice";
+
 export function RootLayout({ children }) {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
   const desktopSidebarCollapsed = useSelector(
     (state) => state.sidebar.desktopSidebarCollapsed,
   );
+  const themeMode = useSelector((state) => state.theme.mode);
   const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
 
   const groupIdBase = useId();
@@ -44,6 +47,8 @@ export function RootLayout({ children }) {
         onOpenSidebar={() => dispatch(openSidebar())}
         desktopSidebarCollapsed={desktopSidebarCollapsed}
         onToggleDesktopSidebar={() => dispatch(toggleDesktopSidebar())}
+        themeMode={themeMode}
+        onToggleTheme={() => dispatch(toggleThemeMode())}
       />
 
       <div className="flex w-full">

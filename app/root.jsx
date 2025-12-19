@@ -11,6 +11,8 @@ import { Provider } from "react-redux";
 
 import { store } from "./store/store";
 
+import { ThemeSync } from "./components/ThemeSync";
+
 import "./app.css";
 
 export const links = () => [
@@ -47,6 +49,7 @@ export function Layout({ children }) {
 export default function App() {
   return (
     <Provider store={store}>
+      <ThemeSync />
       <Outlet />
     </Provider>
   );
