@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 
-import { Button } from "../ui/button";
+import { Button } from "../UI/Button";
 
 export function AppHeader({
   sidebarOpen,

@@ -5,34 +5,62 @@ export function meta() {
   ];
 }
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/UI/Card";
+
 export default function Home() {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold text-gray-900">Home</h1>
-      <p className="mt-2 text-gray-600">This is a demo placeholder page.</p>
+      <h1 className="text-2xl font-semibold text-foreground">Home</h1>
+      <p className="mt-2 text-muted-foreground">
+        This is a demo placeholder page.
+      </p>
 
-      <div className="mt-6 rounded-lg border border-gray-200 bg-white p-6">
-        <h2 className="text-lg font-medium text-gray-900">Dummy content</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Replace this section with your real homepage content. For now it
-          includes a couple of blocks to show spacing and typography.
-        </p>
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Dummy content</CardTitle>
+          <CardDescription>
+            Replace this section with your real homepage content. For now it
+            includes a couple of blocks to show spacing and typography.
+          </CardDescription>
+        </CardHeader>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-md bg-gray-50 p-4">
-            <div className="text-sm font-semibold text-gray-900">Card A</div>
-            <div className="mt-1 text-sm text-gray-600">
-              Some example text to fill space.
-            </div>
+        <CardContent>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Card className="bg-muted">
+              <CardHeader>
+                <CardTitle>Card A</CardTitle>
+                <CardDescription>
+                  Some example text to fill space.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="bg-muted">
+              <CardHeader>
+                <CardTitle>Card B</CardTitle>
+                <CardDescription>
+                  Another block of placeholder content.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="bg-muted">
+              <CardHeader>
+                <CardTitle>Card C</CardTitle>
+                <CardDescription>
+                  One more card so the layout looks like a dashboard.
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </div>
-          <div className="rounded-md bg-gray-50 p-4">
-            <div className="text-sm font-semibold text-gray-900">Card B</div>
-            <div className="mt-1 text-sm text-gray-600">
-              Another block of placeholder content.
-            </div>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
