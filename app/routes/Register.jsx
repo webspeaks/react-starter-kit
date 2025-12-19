@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/UI/Card";
-import { Input } from "../components/UI/input";
+import { Input } from "../components/UI/Input";
 
 async function registerRequest(payload) {
   const res = await fetch("https://dummyjson.com/users/add", {

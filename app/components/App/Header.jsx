@@ -1,5 +1,5 @@
 import { Moon, Sun } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button } from "../UI/Button";
@@ -15,6 +15,7 @@ export function AppHeader({
   onToggleTheme,
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const isAuthed = useSelector((state) => !!state.auth.token);
 
@@ -23,6 +24,7 @@ export function AppHeader({
       await fetch("/api/logout", { method: "POST" });
     } finally {
       dispatch(logout());
+      navigate("/login");
     }
   }
 

@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/UI/Card";
-import { Input } from "../components/UI/input";
+import { Input } from "../components/UI/Input";
 
 import { setCredentials } from "../store/authSlice";
 
