@@ -1,12 +1,18 @@
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo } from "react";
 import { Link } from "react-router";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  closeSidebar,
+  openSidebar,
+  toggleGroup as toggleGroupAction,
+} from "../store/sidebarSlice";
+
 export function RootLayout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState({
-    analytics: true,
-    settings: false,
-  });
+  const dispatch = useDispatch();
+  const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
+  const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
 
   const analyticsGroupId = useId();
   const settingsGroupId = useId();
@@ -30,7 +36,7 @@ export function RootLayout({ children }) {
   );
 
   function toggleGroup(key) {
-    setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }));
+    dispatch(toggleGroupAction(key));
   }
 
   return (
@@ -42,7 +48,7 @@ export function RootLayout({ children }) {
             className="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
             aria-label="Open sidebar"
             aria-expanded={sidebarOpen}
-            onClick={() => setSidebarOpen(true)}
+            onClick={() => dispatch(openSidebar())}
           >
             <svg
               viewBox="0 0 24 24"
@@ -160,7 +166,7 @@ export function RootLayout({ children }) {
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-gray-800 hover:bg-gray-50"
-                    aria-expanded={!!openGroups[group.key]}
+                    aria-expanded={!!expandedGroups[group.key]}
                     aria-controls={group.id}
                     onClick={() => toggleGroup(group.key)}
                   >
@@ -168,7 +174,7 @@ export function RootLayout({ children }) {
                     <svg
                       viewBox="0 0 20 20"
                       className={`h-4 w-4 text-gray-500 transition-transform ${
-                        openGroups[group.key] ? "rotate-180" : "rotate-0"
+                        expandedGroups[group.key] ? "rotate-180" : "rotate-0"
                       }`}
                       fill="currentColor"
                     >
@@ -182,7 +188,9 @@ export function RootLayout({ children }) {
 
                   <div
                     id={group.id}
-                    className={`${openGroups[group.key] ? "block" : "hidden"} border-t border-gray-200 px-2 py-2`}
+                    className={`${
+                      expandedGroups[group.key] ? "block" : "hidden"
+                    } border-t border-gray-200 px-2 py-2`}
                   >
                     <div className="space-y-1">
                       {group.items.map((label) => (
@@ -210,7 +218,7 @@ export function RootLayout({ children }) {
           >
             <div
               className="absolute inset-0 bg-gray-900/50"
-              onClick={() => setSidebarOpen(false)}
+              onClick={() => dispatch(closeSidebar())}
             />
             <div className="absolute inset-y-0 left-0 w-[18rem] bg-white shadow-xl">
               <div className="flex h-14 items-center justify-between border-b border-gray-200 px-3">
@@ -224,7 +232,7 @@ export function RootLayout({ children }) {
                   type="button"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   aria-label="Close sidebar"
-                  onClick={() => setSidebarOpen(false)}
+                  onClick={() => dispatch(closeSidebar())}
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -247,7 +255,7 @@ export function RootLayout({ children }) {
                   <button
                     type="button"
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-                    onClick={() => setSidebarOpen(false)}
+                    onClick={() => dispatch(closeSidebar())}
                   >
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-700">
                       <svg
@@ -270,30 +278,7 @@ export function RootLayout({ children }) {
                   <button
                     type="button"
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-                    onClick={() => setSidebarOpen(false)}
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4 4h16v6H4V4zm0 10h16v6H4v-6z"
-                        />
-                      </svg>
-                    </span>
-                    <span>Projects</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-                    onClick={() => setSidebarOpen(false)}
+                    onClick={() => dispatch(closeSidebar())}
                   >
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
                       <svg
@@ -323,7 +308,7 @@ export function RootLayout({ children }) {
                       <button
                         type="button"
                         className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-gray-800 hover:bg-gray-50"
-                        aria-expanded={!!openGroups[group.key]}
+                        aria-expanded={!!expandedGroups[group.key]}
                         aria-controls={group.id}
                         onClick={() => toggleGroup(group.key)}
                       >
@@ -331,7 +316,9 @@ export function RootLayout({ children }) {
                         <svg
                           viewBox="0 0 20 20"
                           className={`h-4 w-4 text-gray-500 transition-transform ${
-                            openGroups[group.key] ? "rotate-180" : "rotate-0"
+                            expandedGroups[group.key]
+                              ? "rotate-180"
+                              : "rotate-0"
                           }`}
                           fill="currentColor"
                         >
@@ -346,7 +333,7 @@ export function RootLayout({ children }) {
                       <div
                         id={group.id}
                         className={`${
-                          openGroups[group.key] ? "block" : "hidden"
+                          expandedGroups[group.key] ? "block" : "hidden"
                         } border-t border-gray-200 px-2 py-2`}
                       >
                         <div className="space-y-1">
@@ -355,7 +342,7 @@ export function RootLayout({ children }) {
                               key={label}
                               type="button"
                               className="flex w-full items-center rounded-md px-2 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() => setSidebarOpen(false)}
+                              onClick={() => dispatch(closeSidebar())}
                             >
                               {label}
                             </button>
