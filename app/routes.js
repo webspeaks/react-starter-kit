@@ -1,14 +1,14 @@
 export default [
   {
-    file: "./routes/root.jsx",
+    file: "./routes/Root.jsx",
     children: [
       {
-        file: "./routes/home.jsx",
+        file: "./routes/Home.jsx",
         index: true,
       },
       {
         path: "projects",
-        file: "./routes/projects.jsx",
+        file: "./routes/Projects.jsx",
       },
       // Add more routes here as children to be wrapped with RootLayout
     ],
