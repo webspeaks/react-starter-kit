@@ -30,10 +30,26 @@ export const links = () => [
 
 export function Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function () {
+  try {
+    var stored = window.localStorage.getItem('theme');
+    var mode = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    document.documentElement.classList.toggle('dark', mode === 'dark');
+  } catch (e) {
+    // Ignore errors (e.g. localStorage blocked) and fall back to CSS default.
+  }
+})();`,
+          }}
+        />
         <Meta />
         <Links />
       </head>
