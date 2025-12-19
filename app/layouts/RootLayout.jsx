@@ -3,6 +3,8 @@ import { Link } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { sidebarMenu } from "../config/sidebarMenu";
+
 import {
   closeSidebar,
   openSidebar,
@@ -14,29 +16,46 @@ export function RootLayout({ children }) {
   const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
   const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
 
-  const analyticsGroupId = useId();
-  const settingsGroupId = useId();
+  const groupIdBase = useId();
 
-  const groups = useMemo(
-    () => [
-      {
-        key: "analytics",
-        label: "Analytics",
-        id: analyticsGroupId,
-        items: ["Overview", "Reports", "Exports"],
-      },
-      {
-        key: "settings",
-        label: "Settings",
-        id: settingsGroupId,
-        items: ["Profile", "Team", "Billing"],
-      },
-    ],
-    [analyticsGroupId, settingsGroupId],
-  );
+  const groups = useMemo(() => {
+    return sidebarMenu.groups.map((group) => ({
+      ...group,
+      id: `${groupIdBase}-${group.key}`,
+    }));
+  }, [groupIdBase]);
+
+  const primaryItems = sidebarMenu.primary;
 
   function toggleGroup(key) {
     dispatch(toggleGroupAction(key));
+  }
+
+  function renderIcon(icon) {
+    if (!icon || !icon.d) {
+      return null;
+    }
+
+    const toneClasses =
+      icon.tone === "primary"
+        ? "bg-indigo-50 text-indigo-700"
+        : "bg-gray-100 text-gray-700";
+
+    return (
+      <span
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-md ${toneClasses}`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d={icon.d} />
+        </svg>
+      </span>
+    );
   }
 
   return (
@@ -90,71 +109,36 @@ export function RootLayout({ children }) {
         <aside className="hidden w-72 shrink-0 border-r border-gray-200 bg-white lg:block">
           <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
             <nav className="space-y-1">
-              <Link
-                to="/"
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-700">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 12l9-9 9 9v9a2 2 0 01-2 2h-4a2 2 0 01-2-2V10a2 2 0 00-2-2H9a2 2 0 00-2 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z"
-                    />
-                  </svg>
-                </span>
-                <span>Home</span>
-              </Link>
+              {primaryItems.map((item) => {
+                const content = (
+                  <>
+                    {renderIcon(item.icon)}
+                    <span>{item.label}</span>
+                  </>
+                );
 
-              <Link
-                to="/projects"
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 4h16v6H4V4zm0 10h16v6H4v-6z"
-                    />
-                  </svg>
-                </span>
-                <span>Projects</span>
-              </Link>
+                if (item.to) {
+                  return (
+                    <Link
+                      key={item.key}
+                      to={item.to}
+                      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+                    >
+                      {content}
+                    </Link>
+                  );
+                }
 
-              <button
-                type="button"
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8 10h.01M12 10h.01M16 10h.01M21 10c0 6-9 10-9 10S3 16 3 10a9 9 0 0118 0z"
-                    />
-                  </svg>
-                </span>
-                <span>Messages</span>
-              </button>
+                    {content}
+                  </button>
+                );
+              })}
             </nav>
 
             <div className="mt-6 space-y-3">
@@ -193,13 +177,13 @@ export function RootLayout({ children }) {
                     } border-t border-gray-200 px-2 py-2`}
                   >
                     <div className="space-y-1">
-                      {group.items.map((label) => (
+                      {group.items.map((item) => (
                         <button
-                          key={label}
+                          key={item.key}
                           type="button"
                           className="flex w-full items-center rounded-md px-2 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                         >
-                          {label}
+                          {item.label}
                         </button>
                       ))}
                     </div>
@@ -252,51 +236,38 @@ export function RootLayout({ children }) {
 
               <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
                 <nav className="space-y-1">
-                  <button
-                    type="button"
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-                    onClick={() => dispatch(closeSidebar())}
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-indigo-50 text-indigo-700">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 12l9-9 9 9v9a2 2 0 01-2 2h-4a2 2 0 01-2-2V10a2 2 0 00-2-2H9a2 2 0 00-2 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z"
-                        />
-                      </svg>
-                    </span>
-                    <span>Home</span>
-                  </button>
+                  {primaryItems.map((item) => {
+                    const content = (
+                      <>
+                        {renderIcon(item.icon)}
+                        <span>{item.label}</span>
+                      </>
+                    );
 
-                  <button
-                    type="button"
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
-                    onClick={() => dispatch(closeSidebar())}
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-gray-100 text-gray-700">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
+                    if (item.to) {
+                      return (
+                        <Link
+                          key={item.key}
+                          to={item.to}
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+                          onClick={() => dispatch(closeSidebar())}
+                        >
+                          {content}
+                        </Link>
+                      );
+                    }
+
+                    return (
+                      <button
+                        key={item.key}
+                        type="button"
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+                        onClick={() => dispatch(closeSidebar())}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8 10h.01M12 10h.01M16 10h.01M21 10c0 6-9 10-9 10S3 16 3 10a9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </span>
-                    <span>Messages</span>
-                  </button>
+                        {content}
+                      </button>
+                    );
+                  })}
                 </nav>
 
                 <div className="mt-6 space-y-3">
@@ -337,14 +308,14 @@ export function RootLayout({ children }) {
                         } border-t border-gray-200 px-2 py-2`}
                       >
                         <div className="space-y-1">
-                          {group.items.map((label) => (
+                          {group.items.map((item) => (
                             <button
-                              key={label}
+                              key={item.key}
                               type="button"
                               className="flex w-full items-center rounded-md px-2 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                               onClick={() => dispatch(closeSidebar())}
                             >
-                              {label}
+                              {item.label}
                             </button>
                           ))}
                         </div>

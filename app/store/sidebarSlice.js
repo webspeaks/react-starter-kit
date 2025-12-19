@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { sidebarMenu } from "../config/sidebarMenu";
+
+function buildDefaultExpandedGroups() {
+  return Object.fromEntries(
+    sidebarMenu.groups.map((group) => [group.key, !!group.defaultExpanded]),
+  );
+}
+
 const initialState = {
   sidebarOpen: false,
-  expandedGroups: {
-    analytics: true,
-    settings: false,
-  },
+  expandedGroups: buildDefaultExpandedGroups(),
 };
 
 const sidebarSlice = createSlice({
