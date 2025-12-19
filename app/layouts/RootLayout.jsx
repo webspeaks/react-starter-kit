@@ -1,5 +1,5 @@
 import { useId, useMemo } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -31,13 +31,14 @@ export function RootLayout({ children }) {
     dispatch(toggleGroupAction(key));
   }
 
-  function renderIcon(icon) {
+  function renderIcon(icon, isActive = false) {
     if (!icon || !icon.d) {
       return null;
     }
 
-    const toneClasses =
-      icon.tone === "primary"
+    const toneClasses = isActive
+      ? "bg-indigo-50 text-indigo-700"
+      : icon.tone === "primary"
         ? "bg-indigo-50 text-indigo-700"
         : "bg-gray-100 text-gray-700";
 
@@ -110,22 +111,26 @@ export function RootLayout({ children }) {
           <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
             <nav className="space-y-1">
               {primaryItems.map((item) => {
-                const content = (
-                  <>
-                    {renderIcon(item.icon)}
-                    <span>{item.label}</span>
-                  </>
-                );
-
                 if (item.to) {
                   return (
-                    <Link
+                    <NavLink
                       key={item.key}
                       to={item.to}
-                      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+                      className={({ isActive }) =>
+                        `flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+                          isActive
+                            ? "bg-indigo-50 text-indigo-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`
+                      }
                     >
-                      {content}
-                    </Link>
+                      {({ isActive }) => (
+                        <>
+                          {renderIcon(item.icon, isActive)}
+                          <span>{item.label}</span>
+                        </>
+                      )}
+                    </NavLink>
                   );
                 }
 
@@ -135,7 +140,8 @@ export function RootLayout({ children }) {
                     type="button"
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
                   >
-                    {content}
+                    {renderIcon(item.icon, false)}
+                    <span>{item.label}</span>
                   </button>
                 );
               })}
@@ -237,23 +243,27 @@ export function RootLayout({ children }) {
               <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
                 <nav className="space-y-1">
                   {primaryItems.map((item) => {
-                    const content = (
-                      <>
-                        {renderIcon(item.icon)}
-                        <span>{item.label}</span>
-                      </>
-                    );
-
                     if (item.to) {
                       return (
-                        <Link
+                        <NavLink
                           key={item.key}
                           to={item.to}
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+                          className={({ isActive }) =>
+                            `flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+                              isActive
+                                ? "bg-indigo-50 text-indigo-700"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`
+                          }
                           onClick={() => dispatch(closeSidebar())}
                         >
-                          {content}
-                        </Link>
+                          {({ isActive }) => (
+                            <>
+                              {renderIcon(item.icon, isActive)}
+                              <span>{item.label}</span>
+                            </>
+                          )}
+                        </NavLink>
                       );
                     }
 
@@ -264,7 +274,8 @@ export function RootLayout({ children }) {
                         className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
                         onClick={() => dispatch(closeSidebar())}
                       >
-                        {content}
+                        {renderIcon(item.icon, false)}
+                        <span>{item.label}</span>
                       </button>
                     );
                   })}

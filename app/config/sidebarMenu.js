@@ -5,7 +5,7 @@ export const sidebarMenu = {
       label: "Home",
       to: "/",
       icon: {
-        tone: "primary",
+        tone: "neutral",
         d: "M3 12l9-9 9 9v9a2 2 0 01-2 2h-4a2 2 0 01-2-2V10a2 2 0 00-2-2H9a2 2 0 00-2 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2v-9z",
       },
     },
