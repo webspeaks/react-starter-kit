@@ -12,7 +12,7 @@ export function AppHeader({
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-screen-2xl items-center gap-3 px-3 sm:px-4">
+      <div className="flex h-14 w-full items-center gap-3 px-3 sm:px-4">
         <button
           type="button"
           className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring lg:hidden"
