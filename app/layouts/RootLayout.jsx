@@ -41,7 +41,7 @@ export function RootLayout({ children }) {
   }
 
   return (
-    <div className="min-h-dvh bg-gray-50 text-gray-900">
+    <div className="min-h-dvh bg-background text-foreground">
       <AppHeader
         sidebarOpen={sidebarOpen}
         onOpenSidebar={() => dispatch(openSidebar())}
@@ -53,7 +53,7 @@ export function RootLayout({ children }) {
 
       <div className="flex w-full">
         <aside
-          className={`hidden w-72 shrink-0 border-r border-gray-200 bg-white lg:block ${
+          className={`hidden w-72 shrink-0 border-r border-border bg-background lg:block ${
             desktopSidebarCollapsed ? "lg:hidden" : ""
           }`}
         >
@@ -77,17 +77,17 @@ export function RootLayout({ children }) {
               className="absolute inset-0 bg-gray-900/50"
               onClick={() => dispatch(closeSidebar())}
             />
-            <div className="absolute inset-y-0 left-0 w-[18rem] bg-white shadow-xl">
-              <div className="flex h-14 items-center justify-between border-b border-gray-200 px-3">
+            <div className="absolute inset-y-0 left-0 w-[18rem] bg-background shadow-xl">
+              <div className="flex h-14 items-center justify-between border-b border-border px-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-xs font-semibold text-white">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs font-semibold text-primary-foreground">
                     A
                   </div>
                   <div className="text-sm font-semibold">App Name</div>
                 </div>
                 <button
                   type="button"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
                   aria-label="Close sidebar"
                   onClick={() => dispatch(closeSidebar())}
                 >
@@ -121,7 +121,7 @@ export function RootLayout({ children }) {
         ) : null}
 
         <main className="min-w-0 flex-1 p-3 sm:p-4 lg:p-6">
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+          <div className="rounded-xl border border-border bg-card p-4 text-card-foreground shadow-sm sm:p-6">
             {children}
           </div>
         </main>

@@ -13,10 +13,10 @@ export function SidebarMenu({
     }
 
     const toneClasses = isActive
-      ? "bg-indigo-50 text-indigo-700"
+      ? "bg-primary/10 text-primary"
       : icon.tone === "primary"
-        ? "bg-indigo-50 text-indigo-700"
-        : "bg-gray-100 text-gray-700";
+        ? "bg-primary/10 text-primary"
+        : "bg-muted text-muted-foreground";
 
     return (
       <span
@@ -47,8 +47,8 @@ export function SidebarMenu({
                 className={({ isActive }) =>
                   `flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-indigo-50 text-indigo-700"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground hover:bg-accent"
                   }`
                 }
                 onClick={onNavigate}
@@ -67,7 +67,7 @@ export function SidebarMenu({
             <button
               key={item.key}
               type="button"
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-700 hover:bg-gray-100"
+              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-foreground hover:bg-accent"
               onClick={onNavigate}
             >
               {renderIcon(item.icon, false)}
@@ -81,11 +81,11 @@ export function SidebarMenu({
         {groups.map((group) => (
           <div
             key={group.key}
-            className="rounded-lg border border-gray-200 bg-white"
+            className="rounded-lg border border-border bg-card"
           >
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-gray-800 hover:bg-gray-50"
+              className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-foreground hover:bg-accent"
               aria-expanded={!!expandedGroups[group.key]}
               aria-controls={group.id}
               onClick={() => onToggleGroup(group.key)}
@@ -93,7 +93,7 @@ export function SidebarMenu({
               <span>{group.label}</span>
               <svg
                 viewBox="0 0 20 20"
-                className={`h-4 w-4 text-gray-500 transition-transform ${
+                className={`h-4 w-4 text-muted-foreground transition-transform ${
                   expandedGroups[group.key] ? "rotate-180" : "rotate-0"
                 }`}
                 fill="currentColor"
@@ -110,14 +110,14 @@ export function SidebarMenu({
               id={group.id}
               className={`${
                 expandedGroups[group.key] ? "block" : "hidden"
-              } border-t border-gray-200 px-2 py-2`}
+              } border-t border-border px-2 py-2`}
             >
               <div className="space-y-1">
                 {group.items.map((item) => (
                   <button
                     key={item.key}
                     type="button"
-                    className="flex w-full items-center rounded-md px-2 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                    className="flex w-full items-center rounded-md px-2 py-2 text-left text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
                     onClick={onNavigate}
                   >
                     {item.label}
