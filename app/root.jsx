@@ -8,12 +8,15 @@ import {
 } from "react-router";
 
 import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { store } from "./store/store";
 
 import { ThemeSync } from "./components/ThemeSync";
 
 import "./app.css";
+
+const queryClient = new QueryClient();
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -65,8 +68,10 @@ export function Layout({ children }) {
 export default function App() {
   return (
     <Provider store={store}>
-      <ThemeSync />
-      <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <ThemeSync />
+        <Outlet />
+      </QueryClientProvider>
     </Provider>
   );
 }

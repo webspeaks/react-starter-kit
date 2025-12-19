@@ -13,4 +13,12 @@ export default [
       // Add more routes here as children to be wrapped with RootLayout
     ],
   },
+  {
+    path: "login",
+    file: "./routes/Login.jsx",
+  },
+  {
+    path: "register",
+    file: "./routes/Register.jsx",
+  },
 ];

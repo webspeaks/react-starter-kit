@@ -1,6 +1,10 @@
 import { Moon, Sun } from "lucide-react";
+import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Button } from "../UI/Button";
+
+import { logout } from "../../store/authSlice";
 
 export function AppHeader({
   sidebarOpen,
@@ -10,6 +14,10 @@ export function AppHeader({
   themeMode,
   onToggleTheme,
 }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const isAuthed = useSelector((state) => !!state.auth.token);
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
       <div className="flex h-14 w-full items-center gap-3 px-3 sm:px-4">
@@ -92,12 +100,25 @@ export function AppHeader({
             )}
           </Button>
 
-          <div className="hidden text-sm text-muted-foreground sm:block">
-            John Doe
-          </div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
-            JD
-          </div>
+          {isAuthed ? (
+            <>
+              <div className="hidden text-sm text-muted-foreground sm:block">
+                {typeof user?.firstName === "string" ? user.firstName : "User"}
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button asChild variant="outline" size="sm">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
