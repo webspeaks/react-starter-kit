@@ -4,15 +4,15 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../queries/auth";
 
-import { Button } from "../components/UI/Button";
+import { Button } from "../components/UI/Button.jsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/UI/Card";
-import { Input } from "../components/UI/Input";
+} from "../components/UI/Card.jsx";
+import { Input } from "../components/UI/Input.jsx";
 
 import { setCredentials } from "../store/authSlice";
 
