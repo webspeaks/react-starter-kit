@@ -135,7 +135,7 @@ export function AppHeader({
           ) : isAuthed ? (
             <>
               <div className="hidden text-sm text-muted-foreground sm:block">
-                {typeof user?.firstName === "string" ? user.firstName : "User"}
+                {typeof user?.name === "string" ? user.name : "User"}
               </div>
               <Button
                 type="button"
