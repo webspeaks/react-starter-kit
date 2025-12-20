@@ -94,7 +94,7 @@ Note: Variables prefixed with `VITE_` are exposed to the client-side code.
 
    ```bash
    git clone git@github.com:webspeaks/react-starter-kit.git
-   cd starter-js
+   cd react-starter-kit
    ```
 
 2. Install dependencies:
