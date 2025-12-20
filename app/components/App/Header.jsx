@@ -6,6 +6,15 @@ import { useState, useEffect } from "react";
 import { useLogoutMutation } from "../../queries/auth";
 
 import { Button } from "../UI/Button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "../UI/DropdownMenu";
+import { User, Settings, LogOut } from "lucide-react";
 
 import { logout } from "../../store/authSlice";
 
@@ -130,22 +139,66 @@ export function AppHeader({
               <div className="hidden sm:block">
                 <div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div>
               </div>
-              <div className="h-9 w-20 bg-gray-200 rounded-md animate-pulse"></div>
             </div>
           ) : isAuthed ? (
-            <>
-              <div className="hidden text-sm text-muted-foreground sm:block">
-                {typeof user?.name === "string" ? user.name : "User"}
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={onLogout}
-              >
-                Logout
-              </Button>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-9 rounded-full px-2 pl-2.5 pr-3 gap-2"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-foreground">
+                    <span className="text-sm font-semibold">
+                      {typeof user?.name === "string"
+                        ? user.name[0].toUpperCase()
+                        : "U"}
+                    </span>
+                  </div>
+                  <span className="hidden sm:inline text-sm font-medium text-foreground">
+                    {typeof user?.name === "string" ? user.name : "User"}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {typeof user?.name === "string" ? user.name : "User"}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user?.email || "user@example.com"}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/profile"
+                    className="cursor-pointer w-full flex items-center"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/settings"
+                    className="cursor-pointer w-full flex items-center"
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={onLogout}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button asChild variant="outline" size="sm">
               <Link to="/login">Login</Link>
