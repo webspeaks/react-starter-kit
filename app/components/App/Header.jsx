@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
-import { useLogoutMutation } from "../../queries/auth";
+import { useLogoutMutation } from "@/queries/auth";
 
-import { Button } from "../UI/Button";
+import { Button } from "@/components/UI/Button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,10 +13,10 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "../UI/DropdownMenu";
+} from "@/components/UI/DropdownMenu";
 import { User, Settings, LogOut } from "lucide-react";
 
-import { logout } from "../../store/authSlice";
+import { logout } from "@/store/authSlice";
 
 export function AppHeader({
   sidebarOpen,

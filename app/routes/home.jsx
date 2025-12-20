@@ -11,14 +11,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/UI/Card";
+} from "@/components/UI/Card";
 import {
   Page,
   PageContent,
   PageDescription,
   PageHeader,
   PageTitle,
-} from "../components/UI/Page";
+} from "@/components/UI/Page";
 
 export default function Home() {
   return (

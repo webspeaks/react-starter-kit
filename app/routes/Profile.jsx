@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "react-router";
 
-import { Card } from "../components/UI/Card";
-import { Input } from "../components/UI/Input";
-import { Button } from "../components/UI/Button";
+import { Card } from "@/components/UI/Card";
+import { Input } from "@/components/UI/Input";
+import { Button } from "@/components/UI/Button";
 import {
   Page,
   PageActions,
@@ -12,9 +12,9 @@ import {
   PageDescription,
   PageHeader,
   PageTitle,
-} from "../components/UI/Page";
-import { useUpdateUserMutation } from "../queries/user";
-import { setCredentials } from "../store/authSlice";
+} from "@/components/UI/Page";
+import { useUpdateUserMutation } from "@/queries/user";
+import { setCredentials } from "@/store/authSlice";
 
 export function meta() {
   return [
