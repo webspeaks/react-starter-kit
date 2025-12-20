@@ -5,6 +5,14 @@ import { Form } from "react-router";
 import { Card } from "../components/UI/Card";
 import { Input } from "../components/UI/Input";
 import { Button } from "../components/UI/Button";
+import {
+  Page,
+  PageActions,
+  PageContent,
+  PageDescription,
+  PageHeader,
+  PageTitle,
+} from "../components/UI/Page";
 import { useUpdateUserMutation } from "../queries/user";
 import { setCredentials } from "../store/authSlice";
 
@@ -65,93 +73,98 @@ export default function Profile() {
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-foreground">Profile</h1>
-        <p className="text-sm text-muted-foreground">
-          Update your basic account information.
-        </p>
-      </div>
+    <Page>
+      <PageHeader>
+        <div className="space-y-2">
+          <PageTitle>Profile</PageTitle>
+          <PageDescription>
+            Update your basic account information.
+          </PageDescription>
+        </div>
+        <PageActions />
+      </PageHeader>
 
-      <Card className="max-w-xl p-6 space-y-6">
-        <Form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium text-foreground"
-              htmlFor="name"
-            >
-              Name
-            </label>
-            <Input
-              id="name"
-              name="name"
-              value={formState.name}
-              onChange={handleChange}
-              placeholder="Your name"
-              required
-            />
-          </div>
+      <PageContent>
+        <Card className="max-w-xl p-6 space-y-6">
+          <Form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <label
+                className="text-sm font-medium text-foreground"
+                htmlFor="name"
+              >
+                Name
+              </label>
+              <Input
+                id="name"
+                name="name"
+                value={formState.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                required
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium text-foreground"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formState.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              required
-            />
-          </div>
+            <div className="space-y-2">
+              <label
+                className="text-sm font-medium text-foreground"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formState.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                required
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium text-foreground"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formState.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-            />
-            <p className="text-xs text-muted-foreground">
-              Leave blank to keep your current password.
-            </p>
-          </div>
+            <div className="space-y-2">
+              <label
+                className="text-sm font-medium text-foreground"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formState.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+              />
+              <p className="text-xs text-muted-foreground">
+                Leave blank to keep your current password.
+              </p>
+            </div>
 
-          <div className="flex items-center gap-3">
-            <Button
-              type="submit"
-              className="px-5"
-              disabled={mutation.isPending || !userId}
-            >
-              {mutation.isPending ? "Saving..." : "Save changes"}
-            </Button>
-            {mutation.isError ? (
-              <span className="text-xs text-red-600">
-                {mutation.error?.message || "Update failed"}
-              </span>
-            ) : (
-              <span className="text-xs text-muted-foreground">
-                {mutation.isSuccess
-                  ? "Saved!"
-                  : "Changes will be applied after you submit."}
-              </span>
-            )}
-          </div>
-        </Form>
-      </Card>
-    </div>
+            <div className="flex items-center gap-3">
+              <Button
+                type="submit"
+                className="px-5"
+                disabled={mutation.isPending || !userId}
+              >
+                {mutation.isPending ? "Saving..." : "Save changes"}
+              </Button>
+              {mutation.isError ? (
+                <span className="text-xs text-red-600">
+                  {mutation.error?.message || "Update failed"}
+                </span>
+              ) : (
+                <span className="text-xs text-muted-foreground">
+                  {mutation.isSuccess
+                    ? "Saved!"
+                    : "Changes will be applied after you submit."}
+                </span>
+              )}
+            </div>
+          </Form>
+        </Card>
+      </PageContent>
+    </Page>
   );
 }
