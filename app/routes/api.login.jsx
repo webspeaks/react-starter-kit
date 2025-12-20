@@ -62,7 +62,7 @@ export async function action({ request }) {
 
   const user = await platziProfile(accessToken);
 
-  return new Response(JSON.stringify({ user }), {
+  return new Response(JSON.stringify({ user, token: accessToken }), {
     status: 200,
     headers: {
       "Content-Type": "application/json",

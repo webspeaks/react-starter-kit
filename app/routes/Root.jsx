@@ -15,7 +15,7 @@ export function shouldRevalidate() {
 export async function loader({ request }) {
   const token = getAuthToken(request);
   if (!token) {
-    return { user: null };
+    return { user: null, token: null };
   }
 
   try {
@@ -26,19 +26,23 @@ export async function loader({ request }) {
       },
     });
 
-    return { user };
+    return { user, token: accessToken };
   } catch {
-    return { user: null };
+    const url = new URL(request.url);
+    const redirectTo = `${url.pathname}${url.search || ""}`;
+    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
+
+    throw redirect(loginUrl);
   }
 }
 
 export default function Root() {
   const dispatch = useDispatch();
-  const { user } = useLoaderData();
+  const { user, token } = useLoaderData();
 
   useEffect(() => {
-    dispatch(setCredentials({ token: user ? "cookie" : null, user }));
-  }, [dispatch, user]);
+    dispatch(setCredentials({ token, user }));
+  }, [dispatch, token, user]);
 
   return (
     <RootLayout>

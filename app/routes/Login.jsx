@@ -31,7 +31,7 @@ export default function Login() {
 
   const mutation = useLoginMutation({
     onSuccess: (data) => {
-      dispatch(setCredentials({ token: "cookie", user: data.user }));
+      dispatch(setCredentials({ token: data.token, user: data.user }));
 
       const params = new URLSearchParams(location.search);
       const redirect = params.get("redirect") || "/";
