@@ -14,7 +14,7 @@ import {
 import { Input } from "../components/UI/Input";
 
 async function registerRequest(payload) {
-  const res = await fetch("https://dummyjson.com/users/add", {
+  const res = await fetch("https://api.escuelajs.co/api/v1/users/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,9 +39,9 @@ export function meta() {
 export default function Register() {
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const mutation = useMutation({
     mutationFn: registerRequest,
@@ -62,7 +62,7 @@ export default function Register() {
           <CardHeader>
             <CardTitle>Create an account</CardTitle>
             <CardDescription>
-              Register a dummy user via DummyJSON.
+              Register a user via Platzi Fake Store API.
             </CardDescription>
           </CardHeader>
 
@@ -71,34 +71,24 @@ export default function Register() {
               className="mt-4 grid gap-4"
               onSubmit={(e) => {
                 e.preventDefault();
-                mutation.mutate({ firstName, lastName, email });
+                mutation.mutate({
+                  name,
+                  email,
+                  password,
+                  avatar: "https://api.lorem.space/image/face?w=640&h=480",
+                });
               }}
             >
               <div className="grid gap-2">
-                <label className="text-sm font-medium" htmlFor="firstName">
-                  First name
+                <label className="text-sm font-medium" htmlFor="name">
+                  Name
                 </label>
                 <Input
-                  id="firstName"
-                  name="firstName"
-                  autoComplete="given-name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={mutation.isPending}
-                  required
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <label className="text-sm font-medium" htmlFor="lastName">
-                  Last name
-                </label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  id="name"
+                  name="name"
+                  autoComplete="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   disabled={mutation.isPending}
                   required
                 />
@@ -115,6 +105,22 @@ export default function Register() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={mutation.isPending}
+                  required
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <label className="text-sm font-medium" htmlFor="password">
+                  Password
+                </label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   disabled={mutation.isPending}
                   required
                 />

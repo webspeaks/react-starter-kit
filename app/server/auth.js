@@ -2,6 +2,52 @@ import { redirect } from "react-router";
 
 const COOKIE_NAME = "auth_token";
 
+function base64UrlDecode(input) {
+  const padded = input.replace(/-/g, "+").replace(/_/g, "/");
+  const padLength = (4 - (padded.length % 4)) % 4;
+  const normalized = padded + "=".repeat(padLength);
+
+  try {
+    return Buffer.from(normalized, "base64").toString("utf8");
+  } catch {
+    return null;
+  }
+}
+
+function decodeJwtPayload(token) {
+  if (typeof token !== "string") {
+    return null;
+  }
+
+  const parts = token.split(".");
+  if (parts.length < 2) {
+    return null;
+  }
+
+  const decoded = base64UrlDecode(parts[1]);
+  if (!decoded) {
+    return null;
+  }
+
+  try {
+    const json = JSON.parse(decoded);
+    return json && typeof json === "object" ? json : null;
+  } catch {
+    return null;
+  }
+}
+
+function isJwtExpired(token) {
+  const payload = decodeJwtPayload(token);
+  const exp = payload?.exp;
+  if (typeof exp !== "number") {
+    return true;
+  }
+
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  return exp <= nowSeconds;
+}
+
 function parseCookies(header) {
   if (!header || typeof header !== "string") {
     return {};
@@ -69,44 +115,8 @@ export function buildLogoutCookie() {
 }
 
 export async function requireAuthUser(request) {
-  const token = getAuthToken(request);
-  if (!token) {
-    const url = new URL(request.url);
-    const redirectTo = `${url.pathname}${url.search || ""}`;
-    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
-    throw redirect(loginUrl);
-  }
-
-  try {
-    const res = await fetch("https://dummyjson.com/auth/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!res.ok) {
-      const url = new URL(request.url);
-      const redirectTo = `${url.pathname}${url.search || ""}`;
-      const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
-      throw redirect(loginUrl, {
-        headers: {
-          "Set-Cookie": buildLogoutCookie(),
-        },
-      });
-    }
-
-    const user = await res.json();
-    return { token, user };
-  } catch {
-    const url = new URL(request.url);
-    const redirectTo = `${url.pathname}${url.search || ""}`;
-    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
-    throw redirect(loginUrl, {
-      headers: {
-        "Set-Cookie": buildLogoutCookie(),
-      },
-    });
-  }
+  const token = requireAuthToken(request);
+  return { token, user: null };
 }
 
 export function requireAuthToken(request) {
@@ -117,6 +127,18 @@ export function requireAuthToken(request) {
     const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
 
     throw redirect(loginUrl);
+  }
+
+  if (isJwtExpired(token)) {
+    const url = new URL(request.url);
+    const redirectTo = `${url.pathname}${url.search || ""}`;
+    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
+
+    throw redirect(loginUrl, {
+      headers: {
+        "Set-Cookie": buildLogoutCookie(),
+      },
+    });
   }
 
   return token;

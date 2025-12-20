@@ -1,12 +1,12 @@
 import { buildAuthCookie } from "../server/auth";
 
-async function dummyLogin({ username, password }) {
-  const res = await fetch("https://dummyjson.com/auth/login", {
+async function platziLogin({ email, password }) {
+  const res = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
 
   const data = await res.json();
@@ -19,37 +19,53 @@ async function dummyLogin({ username, password }) {
   return data;
 }
 
+async function platziProfile(accessToken) {
+  const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    const message =
+      typeof data?.message === "string"
+        ? data.message
+        : "Failed to load profile";
+    throw new Response(message, { status: res.status || 400 });
+  }
+
+  return data;
+}
+
 export async function action({ request }) {
   if (request.method.toUpperCase() !== "POST") {
     return new Response(null, { status: 405 });
   }
 
   const body = await request.json();
-  const username = body?.username;
+  const email = body?.email;
   const password = body?.password;
 
-  if (typeof username !== "string" || typeof password !== "string") {
+  if (typeof email !== "string" || typeof password !== "string") {
     return new Response("Invalid payload", { status: 400 });
   }
 
-  const data = await dummyLogin({ username, password });
+  const tokens = await platziLogin({ email, password });
+  const accessToken =
+    typeof tokens?.access_token === "string" ? tokens.access_token : null;
 
-  const token =
-    typeof data?.accessToken === "string"
-      ? data.accessToken
-      : typeof data?.token === "string"
-        ? data.token
-        : null;
-
-  if (!token) {
+  if (!accessToken) {
     return new Response("No token returned", { status: 502 });
   }
 
-  return new Response(JSON.stringify({ user: data }), {
+  const user = await platziProfile(accessToken);
+
+  return new Response(JSON.stringify({ user }), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Set-Cookie": buildAuthCookie(token),
+      "Set-Cookie": buildAuthCookie(accessToken),
     },
   });
 }

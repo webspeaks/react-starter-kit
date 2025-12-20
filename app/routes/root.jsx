@@ -3,8 +3,12 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { RootLayout } from "../layouts/RootLayout";
 
-import { getAuthToken, requireAuthUser } from "../server/auth";
+import { getAuthToken, requireAuthToken } from "../server/auth";
 import { setCredentials } from "../store/authSlice";
+
+export function shouldRevalidate() {
+  return false;
+}
 
 export async function loader({ request }) {
   const token = getAuthToken(request);
@@ -13,7 +17,18 @@ export async function loader({ request }) {
   }
 
   try {
-    const { user } = await requireAuthUser(request);
+    const accessToken = requireAuthToken(request);
+    const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      return { user: null };
+    }
+
+    const user = await res.json();
     return { user };
   } catch {
     return { user: null };

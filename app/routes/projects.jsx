@@ -5,10 +5,10 @@ export function meta() {
   ];
 }
 
-import { requireAuthUser } from "../server/auth";
+import { requireAuthToken } from "../server/auth";
 
 export async function loader({ request }) {
-  await requireAuthUser(request);
+  requireAuthToken(request);
   return null;
 }
 

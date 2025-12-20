@@ -16,13 +16,13 @@ import { Input } from "../components/UI/Input";
 
 import { setCredentials } from "../store/authSlice";
 
-async function loginRequest({ username, password }) {
+async function loginRequest({ email, password }) {
   const res = await fetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
 
   const data = await res.json();
@@ -45,8 +45,8 @@ export default function Login() {
   const dispatch = useDispatch();
   const isAuthed = useSelector((state) => !!state.auth.token);
 
-  const [username, setUsername] = useState("emilys");
-  const [password, setPassword] = useState("emilyspass");
+  const [email, setEmail] = useState("john@mail.com");
+  const [password, setPassword] = useState("changeme");
 
   const mutation = useMutation({
     mutationFn: loginRequest,
@@ -90,19 +90,20 @@ export default function Login() {
               className="mt-4 grid gap-4"
               onSubmit={(e) => {
                 e.preventDefault();
-                mutation.mutate({ username, password });
+                mutation.mutate({ email, password });
               }}
             >
               <div className="grid gap-2">
-                <label className="text-sm font-medium" htmlFor="username">
-                  Username
+                <label className="text-sm font-medium" htmlFor="email">
+                  Email
                 </label>
                 <Input
-                  id="username"
-                  name="username"
-                  autoComplete="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   disabled={mutation.isPending}
                   required
                 />
@@ -143,7 +144,7 @@ export default function Login() {
               </div>
 
               <div className="text-xs text-muted-foreground">
-                DummyJSON test user defaults are prefilled.
+                Platzi Fake Store API test credentials are prefilled.
               </div>
             </form>
           </CardContent>
