@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config";
+import { API_BASE_URL } from "../config/api";
 import { requestJson } from "./http";
 
 export function login({ email, password }) {

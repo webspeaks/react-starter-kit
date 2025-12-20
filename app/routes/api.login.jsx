@@ -1,5 +1,5 @@
 import { buildAuthCookie } from "../server/auth";
-import { API_BASE_URL } from "../server/config";
+import { API_BASE_URL } from "../config/server";
 
 async function platziLogin({ email, password }) {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {

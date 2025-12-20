@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import { RootLayout } from "../layouts/RootLayout";
 
 import { getAuthToken, requireAuthToken } from "../server/auth";
-import { API_BASE_URL } from "../server/config";
+import { API_BASE_URL } from "../config/server";
 import { setCredentials } from "../store/authSlice";
+import { requestJson } from "../api/http";
 
 export function shouldRevalidate() {
   return false;
@@ -19,17 +20,12 @@ export async function loader({ request }) {
 
   try {
     const accessToken = requireAuthToken(request);
-    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+    const user = await requestJson(`${API_BASE_URL}/auth/profile`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (!res.ok) {
-      return { user: null };
-    }
-
-    const user = await res.json();
     return { user };
   } catch {
     return { user: null };
