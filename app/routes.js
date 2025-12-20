@@ -13,6 +13,10 @@ export default [
             path: "projects",
             file: "./routes/Projects.jsx",
           },
+          {
+            path: "profile",
+            file: "./routes/Profile.jsx",
+          },
         ],
       },
       // Add more routes here as children to be wrapped with RootLayout
