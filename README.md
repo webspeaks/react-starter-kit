@@ -2,6 +2,10 @@
 
 The definitive React starter kit—the most complete and effective foundation for full-stack applications. Jumpstart production-ready development with built-in authentication, a modern tech stack (React Router, TanStack Query, Redux Toolkit), and a polished UI (Tailwind CSS & Shadcn UI). Skip the boilerplate and build faster.
 
+## Live Demo
+
+#### 🚀 [**Live Demo**](https://react-starter-kit-rho.vercel.app/login)
+
 ## Features
 
 - 🚀 Server-side rendering
