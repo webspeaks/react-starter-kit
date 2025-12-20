@@ -68,6 +68,47 @@ export function buildLogoutCookie() {
   });
 }
 
+export async function requireAuthUser(request) {
+  const token = getAuthToken(request);
+  if (!token) {
+    const url = new URL(request.url);
+    const redirectTo = `${url.pathname}${url.search || ""}`;
+    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
+    throw redirect(loginUrl);
+  }
+
+  try {
+    const res = await fetch("https://dummyjson.com/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const url = new URL(request.url);
+      const redirectTo = `${url.pathname}${url.search || ""}`;
+      const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
+      throw redirect(loginUrl, {
+        headers: {
+          "Set-Cookie": buildLogoutCookie(),
+        },
+      });
+    }
+
+    const user = await res.json();
+    return { token, user };
+  } catch {
+    const url = new URL(request.url);
+    const redirectTo = `${url.pathname}${url.search || ""}`;
+    const loginUrl = `/login?redirect=${encodeURIComponent(redirectTo)}`;
+    throw redirect(loginUrl, {
+      headers: {
+        "Set-Cookie": buildLogoutCookie(),
+      },
+    });
+  }
+}
+
 export function requireAuthToken(request) {
   const token = getAuthToken(request);
   if (!token) {

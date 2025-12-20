@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { RootLayout } from "../layouts/RootLayout";
 
-import { getAuthToken } from "../server/auth";
+import { getAuthToken, requireAuthUser } from "../server/auth";
 import { setCredentials } from "../store/authSlice";
 
 export async function loader({ request }) {
@@ -13,17 +13,7 @@ export async function loader({ request }) {
   }
 
   try {
-    const res = await fetch("https://dummyjson.com/auth/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!res.ok) {
-      return { user: null };
-    }
-
-    const user = await res.json();
+    const { user } = await requireAuthUser(request);
     return { user };
   } catch {
     return { user: null };
