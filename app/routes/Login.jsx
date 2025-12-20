@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useMutation } from "@tanstack/react-query";
+import { useLoginMutation } from "../queries/auth";
 
 import { Button } from "../components/UI/Button";
 import {
@@ -15,25 +15,6 @@ import {
 import { Input } from "../components/UI/Input";
 
 import { setCredentials } from "../store/authSlice";
-
-async function loginRequest({ email, password }) {
-  const res = await fetch("/api/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    const message =
-      typeof data?.message === "string" ? data.message : "Login failed";
-    throw new Error(message);
-  }
-
-  return data;
-}
 
 export function meta() {
   return [{ title: "Login | App Name" }];
@@ -48,8 +29,7 @@ export default function Login() {
   const [email, setEmail] = useState("john@mail.com");
   const [password, setPassword] = useState("changeme");
 
-  const mutation = useMutation({
-    mutationFn: loginRequest,
+  const mutation = useLoginMutation({
     onSuccess: (data) => {
       dispatch(setCredentials({ token: "cookie", user: data.user }));
 

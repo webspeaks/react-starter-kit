@@ -7,8 +7,13 @@ export default [
         index: true,
       },
       {
-        path: "projects",
-        file: "./routes/Projects.jsx",
+        file: "./routes/Protected.jsx",
+        children: [
+          {
+            path: "projects",
+            file: "./routes/Projects.jsx",
+          },
+        ],
       },
       // Add more routes here as children to be wrapped with RootLayout
     ],

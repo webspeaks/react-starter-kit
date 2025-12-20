@@ -1,7 +1,8 @@
 import { buildAuthCookie } from "../server/auth";
+import { API_BASE_URL } from "../server/config";
 
 async function platziLogin({ email, password }) {
-  const res = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,7 +21,7 @@ async function platziLogin({ email, password }) {
 }
 
 async function platziProfile(accessToken) {
-  const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+  const res = await fetch(`${API_BASE_URL}/auth/profile`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

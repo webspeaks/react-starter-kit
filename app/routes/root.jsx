@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { RootLayout } from "../layouts/RootLayout";
 
 import { getAuthToken, requireAuthToken } from "../server/auth";
+import { API_BASE_URL } from "../server/config";
 import { setCredentials } from "../store/authSlice";
 
 export function shouldRevalidate() {
@@ -18,7 +19,7 @@ export async function loader({ request }) {
 
   try {
     const accessToken = requireAuthToken(request);
-    const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+    const res = await fetch(`${API_BASE_URL}/auth/profile`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-import { useMutation } from "@tanstack/react-query";
+import { useRegisterMutation } from "../queries/auth";
 
 import { Button } from "../components/UI/Button";
 import {
@@ -12,25 +12,6 @@ import {
   CardTitle,
 } from "../components/UI/Card";
 import { Input } from "../components/UI/Input";
-
-async function registerRequest(payload) {
-  const res = await fetch("https://api.escuelajs.co/api/v1/users/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    const message =
-      typeof data?.message === "string" ? data.message : "Registration failed";
-    throw new Error(message);
-  }
-
-  return data;
-}
 
 export function meta() {
   return [{ title: "Register | App Name" }];
@@ -43,8 +24,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const mutation = useMutation({
-    mutationFn: registerRequest,
+  const mutation = useRegisterMutation({
     onSuccess: () => {
       navigate("/login");
     },

@@ -2,6 +2,8 @@ import { Moon, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
+import { useLogoutMutation } from "../../queries/auth";
+
 import { Button } from "../UI/Button";
 
 import { logout } from "../../store/authSlice";
@@ -19,13 +21,15 @@ export function AppHeader({
   const user = useSelector((state) => state.auth.user);
   const isAuthed = useSelector((state) => !!state.auth.token);
 
-  async function onLogout() {
-    try {
-      await fetch("/api/logout", { method: "POST" });
-    } finally {
+  const logoutMutation = useLogoutMutation({
+    onSettled: () => {
       dispatch(logout());
       navigate("/login");
-    }
+    },
+  });
+
+  function onLogout() {
+    logoutMutation.mutate();
   }
 
   return (
