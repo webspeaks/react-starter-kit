@@ -1,6 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 import { useLogoutMutation } from "../../queries/auth";
 
@@ -20,6 +21,7 @@ export function AppHeader({
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const isAuthed = useSelector((state) => !!state.auth.token);
+  const [isLoading, setIsLoading] = useState(true);
 
   const logoutMutation = useLogoutMutation({
     onSettled: () => {
@@ -27,6 +29,15 @@ export function AppHeader({
       navigate("/login");
     },
   });
+
+  useEffect(() => {
+    // Set loading to false once the component mounts and auth state is determined
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   function onLogout() {
     logoutMutation.mutate();
@@ -114,7 +125,14 @@ export function AppHeader({
             )}
           </Button>
 
-          {isAuthed ? (
+          {isLoading ? (
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:block">
+                <div className="h-5 w-24 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="h-9 w-20 bg-gray-200 rounded-md animate-pulse"></div>
+            </div>
+          ) : isAuthed ? (
             <>
               <div className="hidden text-sm text-muted-foreground sm:block">
                 {typeof user?.firstName === "string" ? user.firstName : "User"}
