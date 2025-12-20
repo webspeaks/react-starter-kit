@@ -3,12 +3,12 @@ export default [
     file: "./routes/Root.jsx",
     children: [
       {
-        file: "./routes/Home.jsx",
-        index: true,
-      },
-      {
         file: "./routes/Protected.jsx",
         children: [
+          {
+            file: "./routes/Home.jsx",
+            index: true,
+          },
           {
             path: "projects",
             file: "./routes/Projects.jsx",
