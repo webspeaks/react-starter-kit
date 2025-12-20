@@ -93,7 +93,7 @@ Note: Variables prefixed with `VITE_` are exposed to the client-side code.
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:webspeaks/react-starter-kit.git
    cd starter-js
    ```
 
@@ -163,7 +163,7 @@ This template comes with [Tailwind CSS](https://tailwindcss.com/) already config
 
 ## Author Contact Info
 
-Your Name <arvind@webspeaks.in>
+Arvind Bhardwaj <arvind@webspeaks.in>
 
 ## License
 
