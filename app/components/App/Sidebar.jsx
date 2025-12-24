@@ -1,7 +1,10 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { ChevronUp, LogOut, User } from "lucide-react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout } from "@/store/authSlice.js";
+import { useLogoutMutation } from "@/queries/auth";
 
 import {
 	Sidebar,
@@ -25,7 +28,20 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 
 export default function AppSidebar() {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const user = useSelector((state) => state.auth.user);
+
+	const logoutMutation = useLogoutMutation({
+		onSettled: () => {
+			dispatch(logout());
+			navigate("/login");
+		},
+	});
+
+	function onLogout() {
+		logoutMutation.mutate();
+	}
 
 	return (
 		<Sidebar collapsible='icon'>
@@ -103,10 +119,10 @@ export default function AppSidebar() {
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align='end'>
 								<DropdownMenuItem>
-									<User />
+									<User className='h-[1.2rem] w-[1.2rem] mr-2' />
 									<NavLink to='/profile'>Profile</NavLink>
 								</DropdownMenuItem>
-								<DropdownMenuItem variant='destructive'>
+								<DropdownMenuItem variant='destructive' onClick={onLogout}>
 									<LogOut className='h-[1.2rem] w-[1.2rem] mr-2' />
 									<span className='cursor-pointer w-full flex items-center'>
 										Logout
