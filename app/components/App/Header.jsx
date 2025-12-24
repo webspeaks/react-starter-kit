@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { logout } from "@/store/authSlice";
-import { Avatar, AvatarFallback } from "../ui/avatar";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
 
@@ -82,7 +81,7 @@ export default function AppHeader({ onSetTheme }) {
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Avatar>
-							<AvatarImage src={user.avatar} />
+							<AvatarImage src={user?.avatar} />
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 					</DropdownMenuTrigger>
@@ -92,7 +91,7 @@ export default function AppHeader({ onSetTheme }) {
 						align='end'
 					>
 						<DropdownMenuLabel className='font-normal'>
-							{user.name ? user.name : "My Account"}
+							{user?.name ? user.name : "My Account"}
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem>

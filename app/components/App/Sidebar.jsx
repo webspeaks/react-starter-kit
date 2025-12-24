@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { User2, ChevronUp } from "lucide-react";
+import { ChevronUp, LogOut, User } from "lucide-react";
 
 import { useSelector } from "react-redux";
 
@@ -23,8 +23,6 @@ import {
 	DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { LogOut } from "lucide-react";
-import { User } from "lucide-react";
 
 export default function AppSidebar() {
 	const user = useSelector((state) => state.auth.user);
@@ -94,11 +92,11 @@ export default function AppSidebar() {
 							<DropdownMenuTrigger asChild>
 								<SidebarMenuButton>
 									<Avatar>
-										<AvatarImage src={user.avatar} />
+										<AvatarImage src={user?.avatar} />
 										<AvatarFallback>User</AvatarFallback>
 									</Avatar>
 									<span className='group-data-[collapsible=icon]:hidden'>
-										{user.name}
+										{user?.name}
 									</span>
 									<ChevronUp className='ml-auto group-data-[collapsible=icon]:hidden' />
 								</SidebarMenuButton>
