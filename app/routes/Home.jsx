@@ -11,14 +11,14 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card.jsx";
 import {
 	Page,
 	PageContent,
 	PageDescription,
 	PageHeader,
 	PageTitle,
-} from "@/components/ui/page";
+} from "@/components/ui/page.jsx";
 
 export default function Home() {
 	return (

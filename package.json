@@ -38,5 +38,5 @@
 		"vite": "^7.1.7",
 		"vite-plugin-devtools-json": "^1.0.0"
 	},
-	"packageManager": "pnpm@10.5"
+	"packageManager": "pnpm"
 }

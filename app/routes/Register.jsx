@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router";
 
 import { useRegisterMutation } from "../queries/auth";
 
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/button.jsx";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "../components/ui/card";
-import { Input } from "../components/ui/input";
+} from "../components/ui/card.jsx";
+import { Input } from "../components/ui/input.jsx";
 
 export function meta() {
 	return [{ title: "Register | App Name" }];

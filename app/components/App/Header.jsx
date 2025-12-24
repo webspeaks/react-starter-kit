@@ -12,12 +12,12 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.jsx";
 
 import { logout } from "@/store/authSlice";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { Button } from "../ui/button";
-import { SidebarTrigger } from "../ui/sidebar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar.jsx";
+import { Button } from "../ui/button.jsx";
+import { SidebarTrigger } from "../ui/sidebar.jsx";
 
 export default function AppHeader({ onSetTheme }) {
 	const dispatch = useDispatch();

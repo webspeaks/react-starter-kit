@@ -14,15 +14,15 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "../ui/sidebar";
+} from "../ui/sidebar.jsx";
 import { sidebarMenu as items } from "../../config/sidebarMenu";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
 	DropdownMenuContent,
 	DropdownMenuItem,
-} from "../ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+} from "../ui/dropdown-menu.jsx";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 
 export default function AppSidebar() {
 	const user = useSelector((state) => state.auth.user);

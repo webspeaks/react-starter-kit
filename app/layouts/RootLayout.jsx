@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppSidebar from "../components/App/Sidebar";
 import AppHeader from "../components/App/Header";
 
-import { SidebarProvider } from "../components/ui/sidebar";
+import { SidebarProvider } from "../components/ui/sidebar.jsx";
 
 import { useSidebarWithCookies } from "../hooks/useSidebar";
 
