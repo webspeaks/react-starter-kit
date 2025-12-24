@@ -6,6 +6,16 @@ The definitive React starter kit—the most complete and effective foundation fo
 
 #### 🚀 [**Live Demo**](https://react-starter-kit-rho.vercel.app/login)
 
+## Screenshots:
+**Light Mode**
+
+<img width="1767" height="868" alt="Screenshot 2025-12-24 at 10 01 05 PM" src="https://github.com/user-attachments/assets/f3c0d8f9-685d-4451-8ee6-258c87fb3438" />
+
+**Dark Mode**
+
+<img width="1766" height="865" alt="Screenshot 2025-12-24 at 10 01 27 PM" src="https://github.com/user-attachments/assets/d44faac2-56b8-4444-a5fa-86c2a6a92067" />
+
+
 ## Features
 
 - 🚀 Server-side rendering
