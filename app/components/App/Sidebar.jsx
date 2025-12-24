@@ -1,16 +1,26 @@
-import { NavLink, useNavigate } from "react-router";
 import { ChevronUp, LogOut, User } from "lucide-react";
+import { NavLink, useNavigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { logout } from "@/store/authSlice.js";
 import { useLogoutMutation } from "@/queries/auth";
+import { logout } from "@/store/authSlice.js";
 
+import { PlusCircle, PlusCircleIcon, UserCircle } from "lucide-react";
+import { sidebarMenu as items } from "../../config/sidebarMenu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu.jsx";
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarGroup,
+	SidebarGroupAction,
 	SidebarGroupContent,
 	SidebarGroupLabel,
 	SidebarHeader,
@@ -18,14 +28,6 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "../ui/sidebar.jsx";
-import { sidebarMenu as items } from "../../config/sidebarMenu";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-	DropdownMenuItem,
-} from "../ui/dropdown-menu.jsx";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar.jsx";
 
 export default function AppSidebar() {
 	const dispatch = useDispatch();
@@ -96,6 +98,36 @@ export default function AppSidebar() {
 									</SidebarMenuItem>
 								);
 							})}
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+
+				<SidebarGroup className="border-0 bg-transparent">
+					<SidebarGroupLabel className='group-data-[collapsible=icon]:hidden'>
+						Users
+						<SidebarGroupAction>
+							<PlusCircle className="h-4 w-4" />
+							<span className="sr-only">Add User</span>
+						</SidebarGroupAction>
+					</SidebarGroupLabel>
+					<SidebarGroupContent className='px-0'>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton className='px-0 py-0'>
+									<NavLink to="/" className='flex w-full items-center px-2 gap-3 rounded-lg py-2'>
+										<UserCircle className='h-4 w-4' />
+										<span className='group-data-[collapsible=icon]:hidden'>All Users</span>
+									</NavLink>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton className='px-0 py-0'>
+									<NavLink to="/" className='flex w-full items-center px-2 gap-3 rounded-lg py-2'>
+										<PlusCircleIcon className='h-4 w-4' />
+										<span className='group-data-[collapsible=icon]:hidden'>Add User</span>
+									</NavLink>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

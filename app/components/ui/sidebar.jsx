@@ -148,6 +148,18 @@ export function SidebarGroupLabel({ className, ...props }) {
 	);
 }
 
+export function SidebarGroupAction({ className, ...props }) {
+	return (
+		<button
+			className={cn(
+				"flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+				className
+			)}
+			{...props}
+		/>
+	);
+}
+
 export function SidebarGroupContent({ className, ...props }) {
 	return <div className={cn("px-2 pb-2", className)} {...props} />;
 }
