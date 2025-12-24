@@ -1,57 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { sidebarMenu } from "../config/sidebarMenu";
-
-function buildDefaultExpandedGroups() {
-  return Object.fromEntries(
-    sidebarMenu.groups.map((group) => [group.key, !!group.defaultExpanded]),
-  );
-}
-
 const initialState = {
-  sidebarOpen: false,
-  desktopSidebarCollapsed: false,
-  expandedGroups: buildDefaultExpandedGroups(),
+  sidebarOpen: null // null indicates not initialized yet
 };
 
 const sidebarSlice = createSlice({
   name: "sidebar",
   initialState,
   reducers: {
-    openSidebar(state) {
-      state.sidebarOpen = true;
+    toggleSidebar(state) {
+      state.sidebarOpen = !state.sidebarOpen;
     },
-    closeSidebar(state) {
-      state.sidebarOpen = false;
-    },
-    setSidebarOpen(state, action) {
+    setSidebarState(state, action) {
       state.sidebarOpen = action.payload;
-    },
-    toggleDesktopSidebar(state) {
-      state.desktopSidebarCollapsed = !state.desktopSidebarCollapsed;
-    },
-    setDesktopSidebarCollapsed(state, action) {
-      state.desktopSidebarCollapsed = action.payload;
-    },
-    toggleGroup(state, action) {
-      const key = action.payload;
-      state.expandedGroups[key] = !state.expandedGroups[key];
-    },
-    setGroupExpanded(state, action) {
-      const { key, expanded } = action.payload;
-      state.expandedGroups[key] = expanded;
-    },
+    }
   },
 });
 
 export const {
-  openSidebar,
-  closeSidebar,
-  setSidebarOpen,
-  toggleDesktopSidebar,
-  setDesktopSidebarCollapsed,
-  toggleGroup,
-  setGroupExpanded,
+  toggleSidebar,
+  setSidebarState,
 } = sidebarSlice.actions;
 
 export default sidebarSlice.reducer;

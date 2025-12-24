@@ -1,191 +1,47 @@
-import { useEffect, useId, useLayoutEffect, useMemo } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 
-import { sidebarMenu as sidebarMenuConfig } from "../config/sidebarMenu";
+import AppSidebar from "../components/App/Sidebar";
+import AppHeader from "../components/App/Header";
 
-import { SidebarMenu } from "../components/App/SidebarMenu";
-import { AppHeader } from "../components/App/Header";
+import { SidebarProvider } from "../components/UI/sidebar";
 
-import {
-  closeSidebar,
-  openSidebar,
-  toggleDesktopSidebar,
-  toggleGroup as toggleGroupAction,
-  setGroupExpanded,
-  setDesktopSidebarCollapsed,
-} from "../store/sidebarSlice";
+import { useSidebarWithCookies } from "../hooks/useSidebar";
 
-import { toggleThemeMode } from "../store/themeSlice";
-
-const useIsomorphicLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
+import { setThemeMode } from "../store/themeSlice";
 
 export function RootLayout({ children }) {
-  const dispatch = useDispatch();
-  const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
-  const desktopSidebarCollapsed = useSelector(
-    (state) => state.sidebar.desktopSidebarCollapsed,
-  );
-  const themeMode = useSelector((state) => state.theme.mode);
-  const expandedGroups = useSelector((state) => state.sidebar.expandedGroups);
+	const dispatch = useDispatch();
+	const sidebarOpen = useSelector((state) => state.sidebar.sidebarOpen);
+	const themeMode = useSelector((state) => state.theme.mode);
+	const { openSidebar, closeSidebar } = useSidebarWithCookies();
 
-  useIsomorphicLayoutEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
+	// Don't render anything until sidebar state is initialized
+	if (sidebarOpen === null) {
+		return null;
+	}
 
-    try {
-      const storedDesktopCollapsed = window.localStorage.getItem(
-        "sidebar.desktopSidebarCollapsed",
-      );
-      if (storedDesktopCollapsed === "true") {
-        dispatch(setDesktopSidebarCollapsed(true));
-      } else if (storedDesktopCollapsed === "false") {
-        dispatch(setDesktopSidebarCollapsed(false));
-      }
-
-      const stored = window.localStorage.getItem("sidebar.expandedGroups");
-      if (!stored) {
-        return;
-      }
-
-      const parsed = JSON.parse(stored);
-      if (!parsed || typeof parsed !== "object") {
-        return;
-      }
-
-      for (const group of sidebarMenuConfig.groups) {
-        const nextValue = parsed[group.key];
-        if (typeof nextValue === "boolean") {
-          dispatch(setGroupExpanded({ key: group.key, expanded: nextValue }));
-        }
-      }
-    } catch {
-      // Ignore localStorage/JSON errors and fall back to defaults.
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    try {
-      window.localStorage.setItem(
-        "sidebar.desktopSidebarCollapsed",
-        String(desktopSidebarCollapsed),
-      );
-      window.localStorage.setItem(
-        "sidebar.expandedGroups",
-        JSON.stringify(expandedGroups),
-      );
-    } catch {
-      // Ignore localStorage errors (e.g. blocked).
-    }
-  }, [desktopSidebarCollapsed, expandedGroups]);
-
-  const groupIdBase = useId();
-
-  const groups = useMemo(() => {
-    return sidebarMenuConfig.groups.map((group) => ({
-      ...group,
-      id: `${groupIdBase}-${group.key}`,
-    }));
-  }, [groupIdBase]);
-
-  const primaryItems = sidebarMenuConfig.primary;
-
-  function toggleGroup(key) {
-    dispatch(toggleGroupAction(key));
-  }
-
-  return (
-    <div className="min-h-dvh bg-background text-foreground">
-      <AppHeader
-        sidebarOpen={sidebarOpen}
-        onOpenSidebar={() => dispatch(openSidebar())}
-        desktopSidebarCollapsed={desktopSidebarCollapsed}
-        onToggleDesktopSidebar={() => dispatch(toggleDesktopSidebar())}
-        themeMode={themeMode}
-        onToggleTheme={() => dispatch(toggleThemeMode())}
-      />
-
-      <div className="flex w-full">
-        <aside
-          className={`hidden w-72 shrink-0 border-r border-border bg-background lg:block ${
-            desktopSidebarCollapsed ? "lg:hidden" : ""
-          }`}
-        >
-          <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
-            <SidebarMenu
-              primaryItems={primaryItems}
-              groups={groups}
-              expandedGroups={expandedGroups}
-              onToggleGroup={toggleGroup}
-            />
-          </div>
-        </aside>
-
-        {sidebarOpen ? (
-          <div
-            className="fixed inset-0 z-50 lg:hidden"
-            role="dialog"
-            aria-modal="true"
-          >
-            <div
-              className="absolute inset-0 bg-gray-900/50"
-              onClick={() => dispatch(closeSidebar())}
-            />
-            <div className="absolute inset-y-0 left-0 w-[18rem] bg-background shadow-xl">
-              <div className="flex h-14 items-center justify-between border-b border-border px-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-xs font-semibold text-primary-foreground">
-                    A
-                  </div>
-                  <div className="text-sm font-semibold">App Name</div>
-                </div>
-                <button
-                  type="button"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-md text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring"
-                  aria-label="Close sidebar"
-                  onClick={() => dispatch(closeSidebar())}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="h-[calc(100dvh-3.5rem)] overflow-y-auto p-3">
-                <SidebarMenu
-                  primaryItems={primaryItems}
-                  groups={groups}
-                  expandedGroups={expandedGroups}
-                  onToggleGroup={toggleGroup}
-                  onNavigate={() => dispatch(closeSidebar())}
-                />
-              </div>
-            </div>
-          </div>
-        ) : null}
-
-        <main className="min-w-0 flex-1 p-3 sm:p-4 lg:p-6">
-          <div className="rounded-xl border border-border bg-card p-4 text-card-foreground shadow-sm sm:p-6">
-            {children}
-          </div>
-        </main>
-      </div>
-    </div>
-  );
+	return (
+		<SidebarProvider
+			open={sidebarOpen}
+			onOpenChange={(open) => {
+				if (open) {
+					openSidebar();
+				} else {
+					closeSidebar();
+				}
+			}}
+			collapsed={!sidebarOpen}
+		>
+			<AppSidebar />
+			<main className='flex-1'>
+				<AppHeader
+					sidebarOpen={sidebarOpen}
+					onOpenSidebar={() => openSidebar()}
+					themeMode={themeMode}
+					onSetTheme={(mode) => dispatch(setThemeMode(mode))}
+				/>
+				<div className='px-4'>{children}</div>
+			</main>
+		</SidebarProvider>
+	);
 }
