@@ -108,7 +108,7 @@ export function SidebarHeader({ className, ...props }) {
 export function SidebarFooter({ className, ...props }) {
 	return (
 		<div
-			className={cn("mt-auto border-t border-border px-3 py-2", className)}
+			className={cn("mt-auto border-t border-border px-3 py-1", className)}
 			{...props}
 		/>
 	);
