@@ -1,10 +1,15 @@
 export function meta() {
 	return [
-		{ title: "New React Router App" },
+		{ title: "React Starter Kit" },
 		{ name: "description", content: "Welcome to React Router!" },
 	];
 }
 
+import CardUsers from "@/components/dashboard/CardUsers";
+import Chart1 from "@/components/dashboard/Chart1";
+import Chart2 from "@/components/dashboard/Chart2";
+import Chart3 from "@/components/dashboard/Chart3";
+import Chart4 from "@/components/dashboard/Chart4";
 import {
 	Card,
 	CardContent,
@@ -44,15 +49,19 @@ export default function Home() {
 					</CardHeader>
 
 					<CardContent>
-						<div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
-							<Card className='bg-muted'>
-								<CardHeader>
-									<CardTitle>Card A</CardTitle>
-									<CardDescription>
-										Some example text to fill space.
-									</CardDescription>
-								</CardHeader>
-							</Card>
+						<div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-2 items-stretch'>
+							<Chart1 />
+							<Chart2 />
+							<Chart3 />
+							<Chart4 />
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card>
+					<CardContent asChild>
+						<div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-2'>
+							<CardUsers />
 
 							<Card className='bg-muted'>
 								<CardHeader>
