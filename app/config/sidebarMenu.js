@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, Table, Inbox } from "lucide-react";
 
 export const sidebarMenu = [
   {
@@ -9,11 +9,11 @@ export const sidebarMenu = [
   {
     title: "Projects",
     to: "/projects",
-    icon: Home,
+    icon: Table,
   },
   {
     title: "Messages",
     to: "/",
-    icon: Home,
+    icon: Inbox,
   },
 ];

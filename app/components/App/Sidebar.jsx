@@ -1,6 +1,8 @@
 import { NavLink } from "react-router";
 import { User2, ChevronUp } from "lucide-react";
 
+import { useSelector } from "react-redux";
+
 import {
 	Sidebar,
 	SidebarContent,
@@ -12,16 +14,21 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "../UI/sidebar";
+} from "../ui/sidebar";
 import { sidebarMenu as items } from "../../config/sidebarMenu";
 import {
 	DropdownMenu,
 	DropdownMenuTrigger,
 	DropdownMenuContent,
 	DropdownMenuItem,
-} from "../UI/dropdown-menu";
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { LogOut } from "lucide-react";
+import { User } from "lucide-react";
 
 export default function AppSidebar() {
+	const user = useSelector((state) => state.auth.user);
+
 	return (
 		<Sidebar collapsible='icon'>
 			<SidebarHeader>
@@ -86,15 +93,27 @@ export default function AppSidebar() {
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<SidebarMenuButton>
-									<User2 />
+									<Avatar>
+										<AvatarImage src={user.avatar} />
+										<AvatarFallback>User</AvatarFallback>
+									</Avatar>
 									<span className='group-data-[collapsible=icon]:hidden'>
-										John Doe
+										{user.name}
 									</span>
 									<ChevronUp className='ml-auto group-data-[collapsible=icon]:hidden' />
 								</SidebarMenuButton>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align='end'>
-								<DropdownMenuItem>Account</DropdownMenuItem>
+								<DropdownMenuItem>
+									<User />
+									<NavLink to='/profile'>Profile</NavLink>
+								</DropdownMenuItem>
+								<DropdownMenuItem variant='destructive'>
+									<LogOut className='h-[1.2rem] w-[1.2rem] mr-2' />
+									<span className='cursor-pointer w-full flex items-center'>
+										Logout
+									</span>
+								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
 					</SidebarMenuItem>

@@ -60,7 +60,7 @@ export function Layout({ children }) {
 				<Meta />
 				<Links />
 			</head>
-			<body className='flex'>
+			<body className='flex justify-center'>
 				{children}
 				<ScrollRestoration />
 				<Scripts />

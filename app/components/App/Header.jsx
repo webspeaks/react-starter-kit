@@ -12,13 +12,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-} from "@/components/UI/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
 import { logout } from "@/store/authSlice";
-import { Avatar, AvatarFallback } from "../UI/avatar";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { Button } from "../UI/Button";
-import { SidebarTrigger } from "../UI/sidebar";
+import { Button } from "../ui/button";
+import { SidebarTrigger } from "../ui/sidebar";
 
 export default function AppHeader({ onSetTheme }) {
 	const dispatch = useDispatch();
@@ -82,7 +82,7 @@ export default function AppHeader({ onSetTheme }) {
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Avatar>
-							<AvatarImage src='https://github.com/shadcn.png' />
+							<AvatarImage src={user.avatar} />
 							<AvatarFallback>CN</AvatarFallback>
 						</Avatar>
 					</DropdownMenuTrigger>
@@ -92,7 +92,7 @@ export default function AppHeader({ onSetTheme }) {
 						align='end'
 					>
 						<DropdownMenuLabel className='font-normal'>
-							My Account
+							{user.name ? user.name : "My Account"}
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem>
